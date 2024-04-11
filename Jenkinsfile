@@ -11,11 +11,7 @@ pipeline {
         AZURE_SUBSCRIPTION_ID = credentials('AZURE_SUBSCRIPTION_ID')
         AZURE_CLIENT_ID = credentials('AZURE_CLIENT_ID')
         AZURE_CLIENT_SECRET = credentials('AZURE_CLIENT_SECRET')
-        AZURE_TENANT_ID = credentials('AZURE_TENANT_ID')
-        withCredentials([azureServicePrincipal('ARM_CRED')]) {
-            sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
-            sh 'echo "Login Sucessfull"'
-        }
+        AZURE_TENANT_ID = credentials('AZURE_TENANT_ID')        
     }
 
    agent  any
@@ -33,6 +29,7 @@ pipeline {
 
         stage('Plan') {
             steps {
+                sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
                 sh 'pwd;cd terraform/ ; terraform init -upgrade'
                 sh "pwd;cd terraform/ ; terraform plan -out tfplan"
                 sh 'pwd;cd terraform/ ; terraform show -no-color tfplan > tfplan.txt'
