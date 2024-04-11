@@ -19,7 +19,7 @@ pipeline {
         stage('checkout') {
             steps {
                  script{
-                        dir("terraform")
+                        dir("terraformAZ")
                         {
                             git "https://github.com/RaaviSivajiTech/AzureInfra.git"
                         }
@@ -29,9 +29,9 @@ pipeline {
 
         stage('Plan') {
             steps {
-                sh 'pwd;cd terraform/ ; terraform init -upgrade'
-                sh "pwd;cd terraform/ ; terraform plan -out tfplan"
-                sh 'pwd;cd terraform/ ; terraform show -no-color tfplan > tfplan.txt'
+                sh 'pwd;cd terraformAZ/ ; terraform init -upgrade'
+                sh "pwd;cd terraformAZ/ ; terraform plan -out tfplan"
+                sh 'pwd;cd terraformAZ/ ; terraform show -no-color tfplan > tfplan.txt'
             }
         }
         stage('Approval') {
@@ -43,7 +43,7 @@ pipeline {
 
            steps {
                script {
-                    def plan = readFile 'terraform/tfplan.txt'
+                    def plan = readFile 'terraformAZ/tfplan.txt'
                     input message: "Do you want to apply the plan?",
                     parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                }
@@ -52,7 +52,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                sh "pwd;cd terraform/ ; terraform apply -input=false tfplan"
+                sh "pwd;cd terraformAZ/ ; terraform apply -input=false tfplan"
             }
         }
         
@@ -61,7 +61,7 @@ pipeline {
                 sh 'echo "destroying the resources"'
                 script{
                     if(params.ACCION == 'yes'){
-                        sh "pwd;cd terraform/ ; terraform destroy -auto-approve"
+                        sh "pwd;cd terraformAZ/ ; terraform destroy -auto-approve"
                     }
                     else
                     {
