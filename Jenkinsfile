@@ -29,6 +29,7 @@ pipeline {
 
         stage('Plan') {
             steps {
+                sh 'az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" -t "$AZURE_TENANT_ID"'
                 sh 'pwd;cd terraform/ ; terraform init -upgrade'
                 sh "pwd;cd terraform/ ; terraform plan -out tfplan"
                 sh 'pwd;cd terraform/ ; terraform show -no-color tfplan > tfplan.txt'
