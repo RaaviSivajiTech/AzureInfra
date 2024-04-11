@@ -21,7 +21,7 @@ pipeline {
                  script{
                         dir("terraform")
                         {
-                            git "https://github.com/RaaviSivajiTech/PetclinicApp.git"
+                            git "https://github.com/RaaviSivajiTech/AzureInfra.git"
                         }
                     }
                 }
