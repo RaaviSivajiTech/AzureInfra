@@ -23,7 +23,7 @@ terraform {
 
 provider "azurerm" {
   features {}
-  withCredentials([azureServicePrincipal(credentialsId: 'credentials_id',
+  withCredentials([azureServicePrincipal(credentialsId: 'ARM_CRED',
                                     subscriptionIdVariable: 'SUBS_ID',
                                     clientIdVariable: 'CLIENT_ID',
                                     clientSecretVariable: 'CLIENT_SECRET',
