@@ -23,13 +23,10 @@ terraform {
 
 provider "azurerm" {
   features {}
-  withCredentials([azureServicePrincipal(credentialsId: 'ARM_CRED',
-                                    subscriptionIdVariable: 'SUBS_ID',
-                                    clientIdVariable: 'CLIENT_ID',
-                                    clientSecretVariable: 'CLIENT_SECRET',
-                                    tenantIdVariable: 'TENANT_ID')]) {
-      sh 'az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET -t $TENANT_ID'
-  }
+  client_id       = $AZURE_CLIENT_ID
+  client_secret   = $AZURE_CLIENT_SECRET
+  tenant_id       = $AZURE_TENANT_ID
+  subscription_id = $AZURE_SUBSCRIPTION_ID 
 }
 
 provider "aws" {
